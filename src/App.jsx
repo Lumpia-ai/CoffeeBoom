@@ -25,9 +25,19 @@ export default function App() {
   const [currentTab, setCurrentTab] = useState('pos'); // 'pos' | 'owner' | 'ledger' | 'menu'
   const [isOwnerUnlocked, setIsOwnerUnlocked] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
-  const [cashierName, setCashierName] = useState(() => {
-    return localStorage.getItem('cafeboom_cashier_name') || 'Camz';
-  });
+  const [cashierName, setCashierName] = useState('Camz');
+
+  useEffect(() => {
+    localStorage.setItem('cafeboom_cashier_name', 'Camz');
+    setOrders((prev) => {
+      const updated = prev.map((o) => ({
+        ...o,
+        cashier: 'Camz'
+      }));
+      saveStoredOrders(updated);
+      return updated;
+    });
+  }, []);
 
   // Responsive mobile cart toggle (< 768px)
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);

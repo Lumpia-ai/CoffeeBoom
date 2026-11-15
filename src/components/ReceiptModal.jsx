@@ -74,7 +74,7 @@ export default function ReceiptModal({ order, onClose, onNewOrder }) {
               </div>
               <div className="flex justify-between">
                 <span>Cashier:</span>
-                <span>{order.cashier || 'Counter Staff'}</span>
+                <span>{order.cashier && order.cashier !== 'Jhoan (Shift 1)' ? order.cashier : 'Camz'}</span>
               </div>
               {order.customerName && (
                 <div className="flex justify-between">

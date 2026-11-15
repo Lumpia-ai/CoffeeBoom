@@ -145,7 +145,7 @@ export default function TransactionHistory({
                               {order.id}
                             </span>
                             <span className="text-[10px] text-[#8C7667]">
-                              {order.cashier}
+                              {order.cashier && order.cashier !== 'Jhoan (Shift 1)' ? order.cashier : 'Camz'}
                             </span>
                           </div>
                         </div>

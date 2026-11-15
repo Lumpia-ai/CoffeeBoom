@@ -132,9 +132,10 @@ export default function OwnerDashboard({
     sound.playTap();
     if (filteredOrders.length === 0) return;
     const headers = ['Order ID,Time,Type,Cashier,Payment Method,Cups,Total,Status\n'];
-    const rows = filteredOrders.map(o => 
-      `"${o.id}","${new Date(o.createdAt).toLocaleString()}","${o.orderType}","${o.cashier}","${o.paymentMethod}",${o.totalCups},${o.total},"${o.status}"`
-    );
+    const rows = filteredOrders.map(o => {
+      const cashier = o.cashier && o.cashier !== 'Jhoan (Shift 1)' ? o.cashier : 'Camz';
+      return `"${o.id}","${new Date(o.createdAt).toLocaleString()}","${o.orderType}","${cashier}","${o.paymentMethod}",${o.totalCups},${o.total},"${o.status}"`;
+    });
     const blob = new Blob([headers.concat(rows.join('\n')).join('')], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
