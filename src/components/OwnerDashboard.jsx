@@ -32,6 +32,7 @@ export default function OwnerDashboard({
 }) {
   const [timeFilter, setTimeFilter] = useState('Today'); // 'Today' | 'Yesterday' | '7Days' | 'Month' | 'All'
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [clearConfirmText, setClearConfirmText] = useState('');
 
   // Filter orders based on selected time range
   const filteredOrders = useMemo(() => {
@@ -201,7 +202,7 @@ export default function OwnerDashboard({
           {/* Clear Sales Data Button */}
           <button
             type="button"
-            onClick={() => { sound.playTap(); setShowClearConfirm(true); }}
+            onClick={() => { sound.playTap(); setClearConfirmText(''); setShowClearConfirm(true); }}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-rose-50 text-stone-600 hover:text-rose-700 text-xs font-bold border border-stone-200 hover:border-rose-300 transition-colors shadow-2xs active:scale-95"
             title="Clear all sales history"
           >
@@ -550,21 +551,42 @@ export default function OwnerDashboard({
             <div>
               <h3 className="text-lg font-black text-stone-900 font-serif">Clear Sales History?</h3>
               <p className="text-xs text-stone-600 mt-1 leading-relaxed">
-                This will reset the counter sales register to ₱0 and clear all transactions. New orders entered from the counter will start fresh.
+                This will reset the counter sales register to ₱0 and clear all transactions.
               </p>
+              <div className="mt-3.5 text-left">
+                <label className="text-[11px] font-bold text-stone-600 block mb-1">
+                  Type <span className="font-mono text-rose-600 font-extrabold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">Yes-Clear All</span> to confirm:
+                </label>
+                <input
+                  type="text"
+                  value={clearConfirmText}
+                  onChange={(e) => setClearConfirmText(e.target.value)}
+                  placeholder="Yes-Clear All"
+                  className="w-full px-3 py-2 rounded-xl border-2 border-stone-300 text-xs font-mono font-bold text-stone-900 focus:outline-none focus:border-rose-500"
+                  autoFocus
+                />
+              </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => setShowClearConfirm(false)}
-                className="flex-1 py-2.5 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs"
+                onClick={() => { setShowClearConfirm(false); setClearConfirmText(''); }}
+                className="flex-1 py-2.5 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs hover:bg-stone-200"
               >
                 Cancel
               </button>
               <button
                 type="button"
-                onClick={confirmClearSales}
-                className="flex-1 py-2.5 rounded-xl bg-rose-600 text-white font-bold text-xs hover:bg-rose-700"
+                disabled={clearConfirmText.trim().toLowerCase() !== 'yes-clear all'}
+                onClick={() => {
+                  confirmClearSales();
+                  setClearConfirmText('');
+                }}
+                className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                  clearConfirmText.trim().toLowerCase() === 'yes-clear all'
+                    ? 'bg-rose-600 text-white hover:bg-rose-700 shadow-md cursor-pointer active:scale-95'
+                    : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                }`}
               >
                 Yes, Clear All
               </button>

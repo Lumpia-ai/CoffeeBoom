@@ -25,6 +25,7 @@ export default function TransactionHistory({
   const [paymentFilter, setPaymentFilter] = useState('All');
   const [voidConfirmOrder, setVoidConfirmOrder] = useState(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [clearConfirmText, setClearConfirmText] = useState('');
 
   const filteredOrders = useMemo(() => {
     return orders.filter((o) => {
@@ -91,7 +92,7 @@ export default function TransactionHistory({
           {orders.length > 0 && onClearAllSales && (
             <button
               type="button"
-              onClick={() => { sound.playTap(); setShowClearConfirm(true); }}
+              onClick={() => { sound.playTap(); setClearConfirmText(''); setShowClearConfirm(true); }}
               className="px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 text-stone-500 hover:text-rose-600 border border-stone-200 text-xs font-bold transition-colors active:scale-95"
               title="Clear all transactions"
             >
@@ -282,26 +283,45 @@ export default function TransactionHistory({
             </div>
             <div>
               <h3 className="text-lg font-bold text-stone-900">Clear All Transactions?</h3>
-              <p className="text-xs text-stone-600 mt-1">
+              <p className="text-xs text-stone-600 mt-1 leading-relaxed">
                 This will permanently delete all sales from the ledger and reset the counter register to ₱0.
               </p>
+              <div className="mt-3.5 text-left">
+                <label className="text-[11px] font-bold text-stone-600 block mb-1">
+                  Type <span className="font-mono text-rose-600 font-extrabold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">Yes-Clear All</span> to confirm:
+                </label>
+                <input
+                  type="text"
+                  value={clearConfirmText}
+                  onChange={(e) => setClearConfirmText(e.target.value)}
+                  placeholder="Yes-Clear All"
+                  className="w-full px-3 py-2 rounded-xl border-2 border-stone-300 text-xs font-mono font-bold text-stone-900 focus:outline-none focus:border-rose-500"
+                  autoFocus
+                />
+              </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => setShowClearConfirm(false)}
-                className="flex-1 py-2.5 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs"
+                onClick={() => { setShowClearConfirm(false); setClearConfirmText(''); }}
+                className="flex-1 py-2.5 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs hover:bg-stone-200"
               >
                 Cancel
               </button>
               <button
                 type="button"
+                disabled={clearConfirmText.trim().toLowerCase() !== 'yes-clear all'}
                 onClick={() => {
                   sound.playTap();
                   onClearAllSales();
                   setShowClearConfirm(false);
+                  setClearConfirmText('');
                 }}
-                className="flex-1 py-2.5 rounded-xl bg-rose-600 text-white font-bold text-xs hover:bg-rose-700"
+                className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                  clearConfirmText.trim().toLowerCase() === 'yes-clear all'
+                    ? 'bg-rose-600 text-white hover:bg-rose-700 shadow-md cursor-pointer active:scale-95'
+                    : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                }`}
               >
                 Yes, Clear All
               </button>
