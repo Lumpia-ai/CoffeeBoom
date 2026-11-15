@@ -9,7 +9,8 @@ import {
   Clock, 
   ShieldCheck, 
   PauseCircle,
-  Sparkles
+  Sparkles,
+  User
 } from 'lucide-react';
 import { STORE_INFO } from '../data/menu';
 
@@ -151,6 +152,12 @@ export default function Header({
               <span>{heldOrdersCount} Held</span>
             </button>
           )}
+
+          {/* Cashier Badge */}
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-[#1A0E0A]/80 rounded-xl border border-[#3D281F] text-xs font-semibold text-[#E4B07B]">
+            <User className="w-3.5 h-3.5 text-[#C4A999]" />
+            <span>Cashier: <strong className="text-white">{cashierName}</strong></span>
+          </div>
 
           {/* Clock Widget */}
           <div className="hidden lg:flex flex-col items-end px-3 py-1 bg-[#1A0E0A]/70 rounded-xl border border-[#3D281F]/70 text-right">

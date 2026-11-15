@@ -25,7 +25,9 @@ export default function App() {
   const [currentTab, setCurrentTab] = useState('pos'); // 'pos' | 'owner' | 'ledger' | 'menu'
   const [isOwnerUnlocked, setIsOwnerUnlocked] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
-  const [cashierName, setCashierName] = useState('Jhoan (Shift 1)');
+  const [cashierName, setCashierName] = useState(() => {
+    return localStorage.getItem('cafeboom_cashier_name') || 'Camz';
+  });
 
   // Responsive mobile cart toggle (< 768px)
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);

@@ -57,7 +57,7 @@ export function generateDemoOrders() {
       queueNumber: token++,
       createdAt: t.toISOString(),
       orderType: 'Take-Out',
-      cashier: 'Jhoan (Shift 1)',
+      cashier: 'Camz',
       customerName: i % 3 === 0 ? 'Guest' : null,
       tableNo: i % 2 === 0 ? `T-${i + 1}` : null,
       items: [{
